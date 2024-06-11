@@ -5,14 +5,17 @@ import TestChart from '../components/pie-chart';
 import HeaderLogo from '../components/headerLogo'; // Import the HeaderLogo component
 import ThemeContext from '../context/ThemeContext';
 import { FIREBASE_AUTH, FIRESTORE_DB, getDoc, doc } from '../../firebaseConfig';
+import * as Location from 'expo-location';
 
 
 
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ route,  navigation }) {
 
     const { theme, toggleTheme } = useContext(ThemeContext);
     const [firstName, setFirstName] = useState('');
+    const [location, setLocation] = useState(route.params?.userLocation || null);
+    const [temperature, setTemperature] = useState(null);
 
     useEffect(() => {
         const fetchDataFromFirestore = async () => {
@@ -38,7 +41,35 @@ export default function HomeScreen({ navigation }) {
         };
 
         fetchDataFromFirestore(); // Call the function inside useEffect to ensure it runs after the component mounts
+        requestLocationPermission(); // Call the function to request location
     }, []); // Empty dependency array ensures it runs only once after mounting
+
+    const requestLocationPermission = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location.coords);
+        fetchWeather(location.coords.latitude, location.coords.longitude);
+    };
+
+    const fetchWeather = async (latitude, longitude) => {
+        const apiKey = '19c353288b7d4d8d867223716241106'; // Replace with your actual API key
+        const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const temp = data.current.temp_f;
+            setTemperature(temp);
+        } catch (error) {
+            console.log('Error fetching weather data:', error);
+        }
+    };
+
 
 
     // Get screen dimensions
@@ -158,7 +189,7 @@ export default function HomeScreen({ navigation }) {
                     <StatusBar style="auto" />
                     <Text style={styles.welcome_text}>
                         Good afternoon, <Text style={styles.name}>{firstName}</Text>.
-                        It's <Text style={styles.name}>73°F</Text> and mostly sunny outside.
+                        It's <Text style={styles.name}>{temperature}</Text> and mostly sunny outside.
                     </Text>
 
                     <View style={styles.chartContainer}>
