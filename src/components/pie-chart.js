@@ -2,6 +2,7 @@ import React, { Component, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PieChart from 'react-native-pie-chart';
 import ThemeContext from '../context/ThemeContext';
+import { numberOfItems } from '../screens/HomeScreen';
 
 
 export default class TestChart extends Component {
@@ -10,9 +11,14 @@ export default class TestChart extends Component {
   render() {
     const { theme, toggleTheme } = this.context;
     const widthAndHeight = 250;
-    const series = [123, 321, 123];
+    // const { numberOfItems } = this.props;
+    //const series = [123, 321, 123];
+    const plastic = numberOfItems;
+    const metal = numberOfItems;
+    const paper = numberOfItems;
+    const series = [plastic, metal, paper];
     const sliceColor = ['#99DAB3', '#2D5A3D', '#FFFFFF'];
-
+    
     const styles = StyleSheet.create({
       container: {
         alignItems: 'center',

@@ -176,7 +176,7 @@ export default function HomeScreen({ navigation }) {
                     </Text>
 
                     <View style={styles.chartContainer}>
-                        <TestChart />
+                    <TestChart/> 
 
                         <View style={styles.squares_container}>
                             <Square />
@@ -200,3 +200,7 @@ export default function HomeScreen({ navigation }) {
         </SafeAreaView>
     );
 }
+
+// In HomeScreen.js
+export const numberOfItems = 123; // Example export
+
