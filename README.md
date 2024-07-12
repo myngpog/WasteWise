@@ -1,4 +1,4 @@
-<h1 align="center">WasteWise</h1>
+![image](https://github.com/user-attachments/assets/1706554c-6bed-4c16-b5c5-6eb529b2699d)<h1 align="center">WasteWise, moved to https://github.com/WasteWise-Team/WasteWise</h1>
 
 <p align="center">
     <img src="assets/logo3.png" width="300" height="300" alt="Profile Picture">
